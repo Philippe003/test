@@ -1,0 +1,51 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Nov 10 10:00:43 2016
+
+@author: PR
+"""
+
+def sum_list_index(l,j):
+    """sum_list_index returns the sum of the first j elements of a list"""
+    sum_ = 0
+    for i in range(j):
+        sum_ += l[i]
+    return sum_
+        
+
+
+def gen_partitions(n):
+    """partitions returns a list of tuples of n
+                        """
+    l = []
+    l.append(n)
+    i = 0
+    yield tuple([l[i]])
+    while True:
+        if l[i] != 1:
+            l[i] -= 1
+            value = n - sum_list_index(l,i+1)
+            while sum_list_index(l,i+1) != n: 
+                if l[i] < value:
+                    l_extension = [1]*value
+                    l.extend(l_extension)
+                    i += 1*value
+                    break
+                else:
+                    l.append(value)
+                    i += 1
+            yield tuple(l)
+        elif l[i] == 1 and i != 0: 
+            del l[i]
+            i -= 1
+        elif l[i] == 1 and i == 0:
+            l = [1]*n
+            break
+    yield tuple(l)
+    
+def partitions(n):
+    """partitions returns a list of tuples of n"""
+    return [x for x in gen_partitions(n)]
+    
+    
+    
